@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 
-app = FastAPI()
+app = FastAPI(title="KnowledgeDB Admin API", description="The official API for manipulating the DonSU "
+                                                         "vector knowledge database.", version="1.0.0")
 
 
 @app.get("/")
