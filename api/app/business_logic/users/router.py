@@ -1,8 +1,10 @@
-from fastapi import APIRouter, Response
+from fastapi import APIRouter, Response, Depends
 
 from app.business_logic.users.auth import hash_password, authenticate_user, create_access_token
 from app.business_logic.users.dao import UsersDAO
-from app.business_logic.users.schemas import UserRegistrationDTO, UserLoginDTO
+from app.business_logic.users.dependencies import get_user
+from app.business_logic.users.models import User
+from app.business_logic.users.schemas import UserRegistrationDTO, UserLoginDTO, UserPublicDTO
 from app.config import get_registration_secret
 from app.exceptions import UserAlreadyExistsException, ForbiddenException, IncorrectEmailOrPasswordException
 
@@ -28,7 +30,18 @@ async def login_user(response: Response, user_data: UserLoginDTO) -> dict:
     user = await authenticate_user(user_data.email, user_data.password)
     if not user:
         raise IncorrectEmailOrPasswordException
-    access_token = create_access_token({'sub': user.id})
+    access_token = create_access_token({'sub': str(user.id)})
     response.set_cookie(key='access_token', value=access_token, httponly=True)
     return {'ok': True, 'access_token': access_token,
             'message': 'Авторизация прошла успешно'}
+
+
+@router.get('/me')
+async def get_me(user_data: User = Depends(get_user)):
+    return UserPublicDTO(**user_data.__dict__)
+
+
+@router.post('/logout')
+async def logout(response: Response):
+    response.delete_cookie('access_token')
+    return {'message': 'Пользователь успешно вышел из системы'}
