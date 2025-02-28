@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     DB_PASSWORD: str
     SECRET_KEY: str
     ALGORITHM: str
+    REGISTRATION_SECRET: str
     model_config = SettingsConfigDict(
         env_file=os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".env"),
         extra='allow'
@@ -27,3 +28,7 @@ def get_connection_string():
 
 def get_auth_encoding():
     return {"secret_key": settings.SECRET_KEY, "algorithm": settings.ALGORITHM}
+
+
+def get_registration_secret():
+    return settings.REGISTRATION_SECRET
