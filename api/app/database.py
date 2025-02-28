@@ -10,7 +10,7 @@ CONNECTION_STRING = get_connection_string()
 engine = create_async_engine(CONNECTION_STRING)
 async_session_maker = async_sessionmaker(engine, expire_on_commit=False)
 
-int_primary = Annotated[int, mapped_column(primary_key=True)]
+int_primary = Annotated[int, mapped_column(primary_key=True, autoincrement=True)]
 created_at = Annotated[datetime, mapped_column(server_default=func.now())]
 updated_at = Annotated[datetime, mapped_column(server_default=func.now(), onupdate=datetime.now)]
 str_unique = Annotated[str, mapped_column(unique=True, nullable=False)]
