@@ -26,3 +26,7 @@ class Base(AsyncAttrs, DeclarativeBase):
     @declared_attr.directive
     def __tablename__(self) -> str:
         return f"{self.__name__.lower()}s"
+
+
+class EmbeddingBase(DeclarativeBase):
+    pass

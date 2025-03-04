@@ -29,6 +29,13 @@ class BaseDAO:
             return result.scalars().all()
 
     @classmethod
+    async def find_all_paginated(cls, limit: int = 10, offset: int = 0, **fileter_by):
+        async with async_session_maker() as session:
+            query = select(cls.model).filter_by(**fileter_by).limit(limit).offset(offset)
+            result = await session.execute(query)
+            return result.scalars().all()
+
+    @classmethod
     async def add(cls, **data):
         async with async_session_maker() as session:
             async with session.begin():

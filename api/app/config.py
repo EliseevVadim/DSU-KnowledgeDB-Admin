@@ -12,6 +12,9 @@ class Settings(BaseSettings):
     SECRET_KEY: str
     ALGORITHM: str
     REGISTRATION_SECRET: str
+    UPLOAD_DIR: str
+    MODEL_NAME: str
+    COLLECTION_NAME: str
     model_config = SettingsConfigDict(
         env_file=os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".env"),
         extra='allow'
@@ -32,3 +35,15 @@ def get_auth_encoding():
 
 def get_registration_secret():
     return settings.REGISTRATION_SECRET
+
+
+def get_upload_dir():
+    return settings.UPLOAD_DIR
+
+
+def get_model_name():
+    return settings.MODEL_NAME
+
+
+def get_collection_name():
+    return settings.COLLECTION_NAME

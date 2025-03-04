@@ -8,7 +8,7 @@ from app.business_logic.users.schemas import UserRegistrationDTO, UserLoginDTO, 
 from app.config import get_registration_secret
 from app.exceptions import UserAlreadyExistsException, ForbiddenException, IncorrectEmailOrPasswordException
 
-router = APIRouter(prefix='/auth', tags=['auth'])
+router = APIRouter(prefix='/auth', tags=['Auth'])
 
 
 @router.post('/register')
