@@ -1,11 +1,28 @@
 <script setup>
+import { useTheme } from 'vuetify'
+import { ref } from 'vue'
+
+const theme = useTheme()
+
+theme.global.name.value = localStorage.getItem('theme') ?? 'lightTheme'
+
+const isDark = ref(theme.global.name.value === 'darkTheme')
+
+const toggleTheme = () => {
+    isDark.value = !isDark.value
+    theme.global.name.value = isDark.value ? 'darkTheme' : 'lightTheme'
+    localStorage.setItem('theme', theme.global.name.value)
+}
 </script>
 
 <template>
     <v-app>
-        <v-container>
-            <v-btn color="primary">Vuetify is here</v-btn>
+        <v-container class="d-flex justify-end pa-4">
+            <v-btn icon @click="toggleTheme">
+                <v-icon>{{ isDark ? 'mdi-weather-sunny' : 'mdi-weather-night' }}</v-icon>
+            </v-btn>
         </v-container>
+        <router-view />
     </v-app>
 </template>
 
