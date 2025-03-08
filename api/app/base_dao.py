@@ -1,4 +1,4 @@
-from sqlalchemy import select, update, delete
+from sqlalchemy import select, update, delete, func
 from sqlalchemy.exc import SQLAlchemyError
 
 from app.database import async_session_maker
@@ -29,11 +29,16 @@ class BaseDAO:
             return result.scalars().all()
 
     @classmethod
-    async def find_all_paginated(cls, limit: int = 10, offset: int = 0, **fileter_by):
+    async def find_all_paginated(cls, limit: int = 10, offset: int = 0, **filter_by):
         async with async_session_maker() as session:
-            query = select(cls.model).filter_by(**fileter_by).limit(limit).offset(offset)
+            query = select(cls.model).filter_by(**filter_by).limit(limit).offset(offset)
             result = await session.execute(query)
-            return result.scalars().all()
+            items = result.scalars().all()
+
+            count_query = select(func.count()).select_from(cls.model).filter_by(**filter_by)
+            total_result = await session.execute(count_query)
+            total = total_result.scalar()
+        return items, total
 
     @classmethod
     async def add(cls, **data):

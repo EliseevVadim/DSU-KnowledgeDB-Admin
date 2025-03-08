@@ -13,8 +13,8 @@ router = APIRouter(prefix='/documents', tags=['Documents'])
 async def get_all_documents(user_data: User = Depends(get_user),
                             limit: int = Query(10, ge=1, le=25, description="Количество записей на странице"),
                             offset: int = Query(0, ge=0, description="Смещение записей")):
-    documents = await DocumentsDAO.find_all_paginated(limit=limit, offset=offset)
-    return documents
+    documents, total = await DocumentsDAO.find_all_paginated(limit=limit, offset=offset)
+    return {'documents': documents, 'total': total}
 
 
 @router.post('/upload')
@@ -29,9 +29,8 @@ async def upload_document(user_data: User = Depends(get_user),
     return {'ok': True, 'path': file_path, 'count': documents_count}
 
 
-@router.delete('/delete/{document_id}')
+@router.delete('/{document_id}')
 async def delete_document(document_id: str,
-                          user_data: User = Depends(get_user),
                           vector_db=Depends(get_vector_db)):
     vector_db.delete(ids=[document_id])
     return {'ok': True, 'message': 'Документ был успешно удален'}

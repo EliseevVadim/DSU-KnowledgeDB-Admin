@@ -15,6 +15,11 @@ const mutations = {
         localStorage.setItem('access_token', token)
         state.access_token = token
     },
+    REMOVE_ACCESS_TOKEN(state) {
+        console.log("boo");
+        localStorage.removeItem('access_token')
+        state.access_token = null
+    }
 };
 
 const actions = {
@@ -34,6 +39,18 @@ const actions = {
             await axios.post(config.apiUrl + '/auth/login', payload)
                 .then((response) => {
                     store.commit('SET_ACCESS_TOKEN', response.data.access_token)
+                    resolve(response)
+                })
+                .catch((error) => {
+                    reject(error)
+                })
+        })
+    },
+    logout: (context) => {
+        return new Promise(async (resolve, reject) => {
+            await axios.post(config.apiUrl + '/auth/logout')
+                .then((response) => {
+                    context.commit('REMOVE_ACCESS_TOKEN')
                     resolve(response)
                 })
                 .catch((error) => {

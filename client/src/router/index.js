@@ -4,8 +4,8 @@ import {tr} from "vuetify/locale";
 const routes = [
     {
         path: '/',
-        name: 'home',
-        component: () => import('../views/MainAppPageView.vue')
+        redirect: '/dashboard',
+        name: 'home'
     },
     {
         path: '/login',
@@ -16,6 +16,18 @@ const routes = [
         path: '/register',
         name: 'register',
         component: () => import('../views/RegistrationView.vue')
+    },
+    {
+        path: '/dashboard',
+        name: 'panel',
+        component: () => import('../views/MainAppPageView.vue'),
+        children: [
+            {
+                path: '/documents',
+                name: 'documents',
+                component: () => import('../views/admin/DocumentsBoardView.vue')
+            }
+        ]
     }
 ]
 

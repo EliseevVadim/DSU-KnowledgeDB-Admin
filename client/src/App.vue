@@ -17,18 +17,28 @@ const toggleTheme = () => {
 
 <template>
     <v-app>
+        <router-view />
         <v-container class="d-flex justify-end pa-4">
-            <v-btn icon @click="toggleTheme">
+            <v-btn icon @click="toggleTheme" class="theme-switcher">
                 <v-icon>{{ isDark ? 'mdi-weather-sunny' : 'mdi-weather-night' }}</v-icon>
             </v-btn>
         </v-container>
-        <router-view />
     </v-app>
 </template>
 
 <style scoped>
 header {
     line-height: 1.5;
+}
+
+.theme-switcher {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    z-index: 1000;
+    border-radius: 50%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 12px;
 }
 
 .logo {
