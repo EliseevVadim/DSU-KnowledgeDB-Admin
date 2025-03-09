@@ -150,6 +150,11 @@ const register = async () => {
                                    class="text-none">
                                 Зарегистрироваться
                             </v-btn>
+                            <div class="text-center mt-2">
+                                <router-link to="/login" class="register-link">
+                                    Уже зарегистрированы? Войти
+                                </router-link>
+                            </div>
                         </v-form>
                         <v-alert v-if="errorMessage" type="error" dense class="mt-2" closable
                                  @click:close="errorMessage = null">
@@ -167,5 +172,12 @@ const register = async () => {
 </template>
 
 <style scoped>
-
+.register-link {
+    color: #1976D2;
+    text-decoration: none;
+    font-size: 14px;
+}
+.register-link:hover {
+    text-decoration: underline;
+}
 </style>

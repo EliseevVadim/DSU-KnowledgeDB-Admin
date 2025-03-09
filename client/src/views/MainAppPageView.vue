@@ -1,12 +1,12 @@
 <script setup>
 import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import {computed, onMounted, ref} from 'vue'
 
 const store = useStore()
 const router = useRouter()
+const route = useRoute()
 
-const tab = ref('')
 const drawer = ref(false)
 
 const isAuthenticated = computed(() => store.getters.isAuthenticated)
@@ -58,7 +58,7 @@ const logout = async () => {
 
         <v-app-bar app color="primary" dark>
             <v-app-bar-nav-icon @click="drawer = !drawer" />
-            <v-toolbar-title>Главная</v-toolbar-title>
+            <v-toolbar-title>{{ route.meta.title }}</v-toolbar-title>
 
             <v-spacer></v-spacer>
             <v-btn @click="logout">Выйти</v-btn>
@@ -66,7 +66,19 @@ const logout = async () => {
 
         <v-main>
             <v-container fluid>
-                <router-view />
+                <router-view v-slot="{ Component }">
+                    <component :is="Component" v-if="Component" />
+                    <v-container v-else class="fill-height d-flex flex-column justify-center align-center text-center">
+                        <v-icon size="80" color="primary">mdi-home</v-icon>
+                        <h2 class="mt-3">Добро пожаловать!</h2>
+                        <p class="text-medium-emphasis">
+                            Выберите раздел в меню слева или начните с просмотра документов.
+                        </p>
+                        <v-btn color="primary" @click="router.push('/documents')" class="mt-3">
+                            <v-icon left>mdi-file-document</v-icon> Перейти к документам
+                        </v-btn>
+                    </v-container>
+                </router-view>
             </v-container>
         </v-main>
     </v-app>

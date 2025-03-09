@@ -92,8 +92,12 @@ const login = async () => {
                                    class="text-none">
                                 Войти
                             </v-btn>
+                            <div class="text-center mt-2">
+                                <router-link to="/register" class="register-link">
+                                    Нет аккаунта? Зарегистрироваться
+                                </router-link>
+                            </div>
                         </v-form>
-
                         <v-alert v-if="errorMessage" type="error" dense class="mt-2" closable
                                  @click:close="errorMessage = null">
                             {{ errorMessage }}
@@ -110,11 +114,12 @@ const login = async () => {
 </template>
 
 <style scoped>
-.lightTheme {
-    background-color: #f5f5f5;
+.register-link {
+    color: #1976D2;
+    text-decoration: none;
+    font-size: 14px;
 }
-
-.darkTheme {
-    background-color: #121212;
+.register-link:hover {
+    text-decoration: underline;
 }
 </style>

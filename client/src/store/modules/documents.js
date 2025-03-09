@@ -1,6 +1,5 @@
 import axios from "axios";
 import {config} from "@/config/config.js";
-import store from "@/store/index.js";
 
 const state = {
     documents: [],
@@ -21,13 +20,11 @@ const mutations = {
 
 const actions = {
     loadDocuments: async (context, { limit, offset, query }) => {
-        console.log(query)
         await axios.get(config.apiUrl + '/documents', {
             params: { limit, offset, query },
             headers: config.headers
         })
             .then((response) => {
-                console.log(response)
                 context.commit('SET_DOCUMENTS', response.data)
             })
     },

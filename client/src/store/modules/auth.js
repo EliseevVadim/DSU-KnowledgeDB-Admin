@@ -16,7 +16,6 @@ const mutations = {
         state.access_token = token
     },
     REMOVE_ACCESS_TOKEN(state) {
-        console.log("boo");
         localStorage.removeItem('access_token')
         state.access_token = null
     }
