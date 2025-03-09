@@ -4,6 +4,7 @@ import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import ConfirmDialog from '../../components/ConfirmDialog.vue'
 import {tr} from "vuetify/locale";
+import LoadingSpinner from "@/components/LoadingSpinner.vue";
 
 const store = useStore();
 const router = useRouter();
@@ -85,6 +86,7 @@ onMounted(fetchDocuments);
 </script>
 
 <template>
+    <LoadingSpinner :loading="loading" />
     <v-container>
         <v-btn color="primary" class="mb-4" @click="showAddForm = true">
             <v-icon left>mdi-plus</v-icon> Добавить новый
