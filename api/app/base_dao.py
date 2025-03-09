@@ -29,13 +29,17 @@ class BaseDAO:
             return result.scalars().all()
 
     @classmethod
-    async def find_all_paginated(cls, limit: int = 10, offset: int = 0, **filter_by):
+    async def find_all_paginated(cls, limit: int = 10, offset: int = 0, search_query: str = None, **filter_by):
         async with async_session_maker() as session:
             query = select(cls.model).filter_by(**filter_by).limit(limit).offset(offset)
+            if search_query:
+                query = query.filter(func.lower(cls.model).ilike(search_query))
             result = await session.execute(query)
             items = result.scalars().all()
 
             count_query = select(func.count()).select_from(cls.model).filter_by(**filter_by)
+            if search_query:
+                count_query = count_query.filter(func.lower(cls.model).ilike(search_query))
             total_result = await session.execute(count_query)
             total = total_result.scalar()
         return items, total

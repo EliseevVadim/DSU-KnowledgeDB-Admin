@@ -1,3 +1,5 @@
+from typing import Optional
+
 from fastapi import APIRouter, Depends, Query, UploadFile, File
 
 from app.business_logic.documents.dao import DocumentsDAO
@@ -12,8 +14,9 @@ router = APIRouter(prefix='/documents', tags=['Documents'])
 @router.get('/')
 async def get_all_documents(user_data: User = Depends(get_user),
                             limit: int = Query(10, ge=1, le=25, description="Количество записей на странице"),
-                            offset: int = Query(0, ge=0, description="Смещение записей")):
-    documents, total = await DocumentsDAO.find_all_paginated(limit=limit, offset=offset)
+                            offset: int = Query(0, ge=0, description="Смещение записей"),
+                            query: Optional[str] = Query(None, description="Поисковый запрос по названию файла")):
+    documents, total = await DocumentsDAO.find_all_paginated(limit=limit, offset=offset, search_query=query)
     return {'documents': documents, 'total': total}
 
 

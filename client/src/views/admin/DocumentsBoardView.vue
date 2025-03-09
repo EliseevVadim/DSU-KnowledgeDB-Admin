@@ -12,6 +12,8 @@ const router = useRouter();
 const limit = ref(10);
 const page = ref(1);
 
+const searchQuery = ref(null);
+
 const showDocumentDetails = ref(false);
 const showAddForm = ref(false);
 const addFormValid = ref(false);
@@ -42,7 +44,7 @@ const closeDialog = () => {
 
 const fetchDocuments = () => {
     const offset = (page.value - 1) * limit.value;
-    store.dispatch("loadDocuments", { limit: limit.value, offset });
+    store.dispatch("loadDocuments", { limit: limit.value, offset, query: searchQuery.value });
 };
 
 const deleteDocument = async (id, name) => {
@@ -80,7 +82,17 @@ const addDocument = () => {
 const closeAddForm = () => {
     showAddForm.value = false;
     file.value = null;
-}
+};
+
+const searchDocuments = () => {
+    page.value = 1;
+    fetchDocuments();
+};
+
+const resetSearch = () => {
+    searchQuery.value = ''
+    fetchDocuments();
+};
 
 onMounted(fetchDocuments);
 </script>
@@ -91,6 +103,16 @@ onMounted(fetchDocuments);
         <v-btn color="primary" class="mb-4" @click="showAddForm = true">
             <v-icon left>mdi-plus</v-icon> Добавить новый
         </v-btn>
+        <v-text-field
+            v-model="searchQuery"
+            label="Поиск по названию файла"
+            prepend-icon="mdi-magnify"
+            clearable
+            @click:prepend="searchDocuments"
+            @keyup.enter="searchDocuments"
+            @click:clear="resetSearch"
+            class="mb-4"
+        ></v-text-field>
         <v-table>
             <thead>
             <tr>

@@ -110,7 +110,7 @@ body
         $zIndices: (5, 4, 3, 2, 1, 1, 2, 3, 4, 5, 6, 6)
         @for $i from 1 through $dots
             &:nth-child(#{$i})
-                $angle: 360deg / $dots * ($i - 1)
+                $angle: calc(360deg / $dots * ($i - 1))
                 transform: rotate(-$angle) translateX(5em) rotate($angle)
                 z-index: nth($zIndices, $i)
 
