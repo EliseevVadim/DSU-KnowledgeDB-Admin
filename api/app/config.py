@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     REGISTRATION_SECRET: str
     UPLOAD_DIR: str
     MODEL_NAME: str
+    MODEL_REVISION: str
     COLLECTION_NAME: str
     model_config = SettingsConfigDict(
         env_file=os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".env"),
@@ -43,6 +44,10 @@ def get_upload_dir():
 
 def get_model_name():
     return settings.MODEL_NAME
+
+
+def get_model_revision():
+    return settings.MODEL_REVISION
 
 
 def get_collection_name():
