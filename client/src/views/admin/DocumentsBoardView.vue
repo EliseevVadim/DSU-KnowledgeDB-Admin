@@ -2,6 +2,7 @@
 import { ref, onMounted, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import notify from "@/utils/notify.js";
 import ConfirmDialog from '../../components/ConfirmDialog.vue'
 import {tr} from "vuetify/locale";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
@@ -73,9 +74,13 @@ const addDocument = () => {
             fetchDocuments();
             closeAddForm();
             loading.value = false;
+            notify.success('Успех', 'Документ успешно добавлен')
         })
-        .catch((error) => {
-            console.log(error);
+        .catch(() => {
+            notify.error('Ошибка добавления документа', 'Введенные корректность указанного документа');
+        })
+        .finally(() => {
+            loading.value = false;
         })
 };
 

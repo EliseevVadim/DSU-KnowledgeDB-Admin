@@ -5,6 +5,7 @@ import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
+import Notifications from '@kyvg/vue3-notification'
 
 import router from './router'
 import store from "./store";
@@ -65,6 +66,7 @@ const vuetify = createVuetify({
 
 createApp(App)
     .use(vuetify)
+    .use(Notifications)
     .use(router)
     .use(store)
     .mount('#app')
