@@ -9,6 +9,8 @@ from app.business_logic.documents.service import save_file_temporarily, extract_
 from app.business_logic.users.dependencies import get_user
 from app.business_logic.users.models import User
 
+from datetime import datetime
+
 router = APIRouter(prefix='/documents', tags=['Documents'])
 
 
@@ -29,6 +31,9 @@ async def upload_document(user_data: User = Depends(get_user),
     file_path = save_file_temporarily(file)
     documents = extract_chunks_from_file(file_path, splitter)
     documents_count = len(documents)
+    for document in documents:
+        document.metadata['filename'] = os.path.splitext(file.filename)[0]
+        document.metadata['last_updated'] = datetime.now().strftime("%d-%m-%Y")
     vector_db.add_documents(documents)
     os.remove(file_path)
     return {'ok': True, 'path': file_path, 'count': documents_count}
