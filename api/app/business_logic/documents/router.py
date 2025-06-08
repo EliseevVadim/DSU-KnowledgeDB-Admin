@@ -1,3 +1,4 @@
+import os
 from typing import Optional
 
 from fastapi import APIRouter, Depends, Query, UploadFile, File
@@ -29,6 +30,7 @@ async def upload_document(user_data: User = Depends(get_user),
     documents = extract_chunks_from_file(file_path, splitter)
     documents_count = len(documents)
     vector_db.add_documents(documents)
+    os.remove(file_path)
     return {'ok': True, 'path': file_path, 'count': documents_count}
 
 
